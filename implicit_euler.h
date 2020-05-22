@@ -1,5 +1,5 @@
-#ifndef _IMPLICIT_EULER.H_
-#define _IMPLICIT_EULER.H_
+#ifndef _IMPLICIT_EULER_H_
+#define _IMPLICIT_EULER_H_
 /** We will determine class that includes various parameters that useful for coding implicit euler algorithm */
 class parameter{
 	private:
@@ -16,8 +16,8 @@ class parameter{
 		double dt;
 	public:
 		double kappa = 1.0;
-		explicit paramter(double _dx, double _dt):dx(_dx), dt(_dt){}
-		explicit paramter(double _dx, double _dt, double _kappa):dx(_dx), dt(_dt), kappa(_kappa){}
+		explicit parameter(double _dx, double _dt):dx(_dx), dt(_dt){}
+		explicit parameter(double _dx, double _dt, double _kappa):dx(_dx), dt(_dt), kappa(_kappa){}
 
 		double get_dx(void) const{
 			return this->dx;
