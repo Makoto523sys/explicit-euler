@@ -1,5 +1,5 @@
-#ifndef _IMPLICIT_EULER_H_
-#define _IMPLICIT_EULER_H_
+#ifndef _PARAMETER_H_
+#define _PARAMETER_H_
 /** We will determine class that includes various parameters that useful for coding explicit euler algorithm */
 class parameter{
 	private:
