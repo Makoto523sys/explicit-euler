@@ -15,8 +15,7 @@ class IOsystem{
 	public:
 		std::ofstream file;
 		IOsystem(std::string _filename):file{_filename}{}
-		/**
-		 * In the following, 
-
-		void save_by_time(parameter);
+		inline void write_data(explicit_euler&)const;
 };
+
+void IOsystem::write_data(explicit_euler &e)const
