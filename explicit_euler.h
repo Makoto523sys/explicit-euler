@@ -26,4 +26,3 @@ class explicit_euler: public parameter{
 };
 
 void explicit_euler::next(void)const{
-
