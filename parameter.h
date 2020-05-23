@@ -1,6 +1,6 @@
 #ifndef _IMPLICIT_EULER_H_
 #define _IMPLICIT_EULER_H_
-/** We will determine class that includes various parameters that useful for coding implicit euler algorithm */
+/** We will determine class that includes various parameters that useful for coding explicit euler algorithm */
 class parameter{
 	private:
 	/**
