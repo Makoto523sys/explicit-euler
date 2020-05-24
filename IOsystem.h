@@ -18,4 +18,5 @@ class IOsystem{
 		inline void write_data(explicit_euler&)const;
 };
 
-void IOsystem::write_data(explicit_euler &e)const
+void IOsystem::write_data(explicit_euler &e)const{
+
