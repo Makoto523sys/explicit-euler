@@ -2,27 +2,45 @@
 #define _EXPLICIT_EULER_H_
 #include<cmath>
 #include<algorithm>
+#include<vector>
+#include<type_traits>
 #include "parameter.h"
 
 class explicit_euler: public parameter{
 	private:
-		double* u;
+		std::vector<double> u;
 	public:
 		explicit explicit_euler(double _dx, double _dt): parameter{_dx, _dt}{
-			u = new double((int)std::pow(_dt, -1));
-		}
+			u.resize((int)std::pow(dx, -1));
+			u[(int)std::pow(dx, -1) - 1] = 1.0;
+	       	}
 		explicit explicit_euler(double _dx, double _dt, _kappa): parameter{_dx, _dt, _kappa}{
-			u = new double((int)std::pow(_dt, -1));
-		}
+			u.resize((int)std::pow(dx, -1));
+			u[(int)std::pow(dx, -1) - 1] = 1.0;
+	       	}
 		explicit explicit_euler(): parameter{0.001, 0.01}{
-			u = new double((int)std::pow(_dt, -1));
-		}
-		~explicit_euler(){
-			delete[] u;
-		}
-		inline void next(void)const;
-		inline void step_to(int)const;
-		inline void solve(void)const;
+			u.resize((int)std::pow(dx, -1));
+			u[(int)std::pow(dx, -1) - 1] = 1.0;
+	       	}
+		~explicit_euler(){}
+		inline void next(void);
+		inline void step_to(int);
+		inline void solve(void);
 };
 
-void explicit_euler::next(void)const{
+void explicit_euler::next(void){
+	decltype(u) u_tmp;
+	u_tmp.resize(u.size());
+	std::copy(u.begin(), u.end(), u_tmp.begin());
+	for(int i = 1; i < u_tmp.size() - 1; i++) u_tmp[i] = courant * u[i - 1] + (1 - 2 * courant) * u[i] + courant * u[i + 1];
+	std::copy(u_tmp.begin(), u_tmp.end(), u.begin());
+	t += dt;
+}
+
+void explicit_euler::step_to(int n){
+	for(int i = 0; i < n; i++) next();
+}
+
+void explicit_euler::solve(void){
+	while(t <= 0.1) next();
+}
