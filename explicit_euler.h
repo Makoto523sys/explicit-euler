@@ -32,6 +32,14 @@ void explicit_euler::next(void){
 	decltype(u) u_tmp;
 	u_tmp.resize(u.size());
 	std::copy(u.begin(), u.end(), u_tmp.begin());
+	/**
+	 * du/dt = kappa * d^2 u / d x^2
+	 * du/dt = (u^{n+1}_j - u^n_j) / delta_t
+	 * d^2 u/ d x^2 = u^n_{j-1} - 2 * u^n_j + u^n_{j+1}
+	 * r = kappa * dt / (dx)^2
+	 * therefore
+	 * u^{n+1}_j = ru^n_{j-1} - 2 u^n_j + u^n_{j+1}
+	 **/
 	for(int i = 1; i < u_tmp.size() - 1; i++) u_tmp[i] = courant * u[i - 1] + (1 - 2 * courant) * u[i] + courant * u[i + 1];
 	std::copy(u_tmp.begin(), u_tmp.end(), u.begin());
 	t += dt;
