@@ -15,7 +15,16 @@ class IOsystem{
 	public:
 		std::ofstream file;
 		IOsystem(std::string _filename):file{_filename}{}
+		~IOsystem(){
+			file.close();
+		}
 		inline void write_data(explicit_euler&)const;
 };
 
-void IOsystem::write_data(explicit_euler &e)const
+void IOsystem::write_data(explicit_euler &e)const{
+	double x = 0.0;
+	for(auto&& k: e.u){
+		file << x << " " << k << std::endl;
+		x += e.dt;
+	}
+}
