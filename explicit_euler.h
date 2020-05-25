@@ -14,7 +14,7 @@ class explicit_euler: public parameter{
 			u.resize((int)std::pow(dx, -1));
 			u[(int)std::pow(dx, -1) - 1] = 1.0;
 	       	}
-		explicit explicit_euler(double _dx, double _dt, _kappa): parameter{_dx, _dt, _kappa}{
+		explicit explicit_euler(double _dx, double _dt,double _kappa): parameter{_dx, _dt, _kappa}{
 			u.resize((int)std::pow(dx, -1));
 			u[(int)std::pow(dx, -1) - 1] = 1.0;
 	       	}
@@ -52,3 +52,4 @@ void explicit_euler::step_to(int n){
 void explicit_euler::solve(void){
 	while(t <= 0.1) next();
 }
+#endif
