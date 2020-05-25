@@ -21,11 +21,10 @@ class IOsystem{
 void IOsystem::write_data(explicit_euler &e)const{
 	double x = 0.0;
 	std::ofstream out{filename};
-	/*for(auto&& k: e.u){
-		file << x << " " << std::scientific << k << std::endl;
+	for(auto&& k: e.u){
+		out << x << " " << std::scientific << k << std::endl;
 		x += e.dt;
-	}*/
-	for(int i = 0; i < 100; i++) out << i << " ";
+	}
 	out.close();
 }
 #endif
