@@ -14,15 +14,19 @@ class parameter{
 	 */
 	public:
 		double t = 0.0;
+		int nx = 0;
 		double dx;
 		double dt;
 		double kappa = 1.0;
 		double courant;
-		explicit parameter(double _dx, double _dt):dx(_dx), dt(_dt){
-			courant = kappa / dx * dt / dx;
+		double limt = 0.3;
+		explicit parameter(double _nx, double _dt):nx(_nx), dt(_dt){
+			dx = 1.0f / (nx - 1);
+			courant = kappa * dt /(dx * dx);
 		}
-		explicit parameter(double _dx, double _dt, double _kappa):dx(_dx), dt(_dt), kappa(_kappa){
-			courant = kappa * dt / dx;
+		explicit parameter(double _nx, double _dt, double _kappa):nx(_nx), dt(_dt), kappa(_kappa){
+			dx = 1.0f / (nx - 1);
+			courant = kappa * dt /(dx * dx);
 		}
 
 };
