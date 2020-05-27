@@ -7,31 +7,43 @@
 #include "parameter.h"
 
 class explicit_euler: public parameter{
-	private:
-		std::vector<double> u;
 	public:
-		explicit explicit_euler(double _dx, double _dt): parameter{_dx, _dt}{
-			u.resize((int)std::pow(dx, -1));
-			u[(int)std::pow(dx, -1) - 1] = 1.0;
+		std::vector<double> u;
+		std::vector<double> u_tmp;
+		explicit explicit_euler(double _nx, double _dt): parameter{_nx, _dt}{
+			u.resize(nx);
+			u_tmp.resize(nx);
+			u[nx - 1] = 1.0;
+			u_tmp[nx - 1] = 1.0;
 	       	}
-		explicit explicit_euler(double _dx, double _dt,double _kappa): parameter{_dx, _dt, _kappa}{
-			u.resize((int)std::pow(dx, -1));
-			u[(int)std::pow(dx, -1) - 1] = 1.0;
+		explicit explicit_euler(double _nx, double _dt,double _kappa): parameter{_nx, _dt, _kappa}{
+			u.resize(nx);
+			u_tmp.resize(nx);
+			u[nx - 1] = 1.0;
+			u_tmp[nx - 1] = 1.0;
 	       	}
-		explicit explicit_euler(): parameter{0.001, 0.01}{
-			u.resize((int)std::pow(dx, -1));
-			u[(int)std::pow(dx, -1) - 1] = 1.0;
+		explicit explicit_euler(): parameter{21, 1e-3}{
+			u.resize(nx);
+			u_tmp.resize(nx);
+			u[nx - 1] = 1.0;
+			u_tmp[nx - 1] = 1.0;
 	       	}
 		~explicit_euler(){}
 		inline void next(void);
 		inline void step_to(int);
 		inline void solve(void);
+		inline bool is_end(void);
 };
 
+bool  explicit_euler::is_end(void){
+	return std::fabs(t - limt) < 1e-4;
+}
+
 void explicit_euler::next(void){
-	decltype(u) u_tmp;
-	u_tmp.resize(u.size());
-	std::copy(u.begin(), u.end(), u_tmp.begin());
+	if(is_end()){
+		std::cout << "All step have finished" << std::endl;
+		return;
+	}
 	/**
 	 * du/dt = kappa * d^2 u / d x^2
 	 * du/dt = (u^{n+1}_j - u^n_j) / delta_t
@@ -40,8 +52,12 @@ void explicit_euler::next(void){
 	 * therefore
 	 * u^{n+1}_j = ru^n_{j-1} - 2 u^n_j + u^n_{j+1}
 	 **/
-	for(int i = 1; i < u_tmp.size() - 1; i++) u_tmp[i] = courant * u[i - 1] + (1 - 2 * courant) * u[i] + courant * u[i + 1];
-	std::copy(u_tmp.begin(), u_tmp.end(), u.begin());
+	std::cout << -1;
+	for(int i = 1; i < u_tmp.size() - 1; i++) 
+		u_tmp[i] = u[i] + courant * (u[i + 1] - 2 * u[i] + u[i - 1]);
+		//u_tmp[i] = u[i] + (dt * kappa / (dx * dx)) * (u[i + 1] - 2 * u[i] + u[i - 1]);
+		//u_tmp[i] = u[i] + dt * kappa * (u[i + 1] - 2 * u[i] + u[i - 1]) / (dx * dx);
+	std::copy(u_tmp.begin() + 1, u_tmp.end() - 1, u.begin() + 1);
 	t += dt;
 }
 
@@ -50,6 +66,6 @@ void explicit_euler::step_to(int n){
 }
 
 void explicit_euler::solve(void){
-	while(t <= 0.1) next();
+	while(t <= limt) next();
 }
 #endif
