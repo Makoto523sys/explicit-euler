@@ -21,9 +21,9 @@ class IOsystem{
 void IOsystem::write_data(explicit_euler &e)const{
 	double x = 0.0;
 	std::ofstream out{filename};
-	for(auto&& k: e.u){
-		out << x << " " << std::scientific << k << std::endl;
-		x += e.dt;
+	for(auto&& k: e.u_tmp){
+		out << x << "\t" << std::scientific << k << std::endl;
+		x += e.dx;
 	}
 	out.close();
 }
